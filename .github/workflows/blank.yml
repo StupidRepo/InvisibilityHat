@@ -1,0 +1,27 @@
+name: Build Mod
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */1 * * *"
+jobs:
+  gradle:
+    name: Build Mod
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 17
+        
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+    
+    - name: Build to File
+      run: ./gradlew jar && mv build/devlibs/invisibility-hat-invisible-dev.jar build/invisibilityHat.jar
+
+    - name: Upload JAR file
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: downloadThis
+        path: build/invisibilityHat.jar
