@@ -1,5 +1,9 @@
 package com.stupidrepo.invisibilityhat.items;
 
+import com.stupidrepo.invisibilityhat.InvisibilityHat;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -7,9 +11,13 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class InvisibilityHatItem extends Item {
     public InvisibilityHatItem() {
@@ -69,7 +77,7 @@ public class InvisibilityHatItem extends Item {
     // Iahhhhhhhh just found me a brand new box of matches (EEEEYEHHHH)
     // And what he knows, you ain't had time to learn
     // [song title], and that's just what they'll do!
-    // One of these days these boots (epic crumpet ends) are gonna walk all over you.
+    // One of these days these boots are gonna walk all over you.
     // ting tinga ting tinga ting tinga ting tinga ting tinga ting tinga ting tinga ting tinga
     // do (sha sha, sha sha)-ARE YA READY BOOTS?-do (sha sha, sha sha) do (sha sha, sha sha)
     // do BA BA BA BA-START WALKIN'!
@@ -188,10 +196,13 @@ public class InvisibilityHatItem extends Item {
 
     // woah I did the whole song then. damn, that took so long!
 
-
+    private void sendMessageToPlayer(Level level, Player player, String text) {
+        if(!level.isClientSide) { player.sendSystemMessage(Component.nullToEmpty(text)); }
+    }
 
     private void stopAllChasingMobs(Level level, Player player) {
-        level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + ifYouChangeYourMind, player.getBlockY() + onTheFirstDayInLine, player.getBlockZ() + ifYouChangeYourMind, player.getBlockX() - ifYouChangeYourMind, player.getBlockY() - onTheFirstDayInLine, player.getBlockZ() - ifYouChangeYourMind), mob -> mob.getTarget() == player);
+        List<Mob> mobs = level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + ifYouChangeYourMind, player.getBlockY() + onTheFirstDayInLine, player.getBlockZ() + ifYouChangeYourMind, player.getBlockX() - ifYouChangeYourMind, player.getBlockY() - onTheFirstDayInLine, player.getBlockZ() - ifYouChangeYourMind), mob -> mob.getTarget() == player);
+        mobs.forEach(mob -> mob.setTarget(null));
     }
 
     @Override
@@ -199,10 +210,12 @@ public class InvisibilityHatItem extends Item {
         if(!player.isInvisible()) {
             stopAllChasingMobs(level, player);
             timeKeepsOnSlippinSlippinSlippin = level.getGameTime();
+            sendMessageToPlayer(level, player, "Poof! You're now invisible.");
             player.setInvisible(true);
         } else {
             intoThe = level.getGameTime();
             int elapsed = (int) (intoThe - timeKeepsOnSlippinSlippinSlippin);
+            sendMessageToPlayer(level, player, "Woosh! You're now visible.");
             player.setInvisible(false);
             player.getCooldowns().addCooldown(this, (elapsed / 2));
         }
@@ -210,10 +223,21 @@ public class InvisibilityHatItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if(entity instanceof Player player && player.isInvisible() && (intoThe - timeKeepsOnSlippinSlippinSlippin / 20) >= future) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag isAdvanced) {
+
+        components.add(Component.literal("Hold SHIFT to view side effects!").withStyle(ChatFormatting.RED));
+        if(Screen.hasShiftDown()) {
+            components.add(Component.literal("When going visible, you won't be able to mine blocks, place blocks\n or attack mobs for the amount of time you were invisible.").withStyle(ChatFormatting.DARK_RED));
+        }
+        super.appendHoverText(stack, level, components, isAdvanced);
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
+        if(entity instanceof Player player && player.isInvisible() && ((level.getGameTime() - timeKeepsOnSlippinSlippinSlippin) / 20) >= future) {
+            sendMessageToPlayer(level, player, String.format("Uh oh! You was invisibile for longer than %d seconds, so you became visible again!", future));
             player.setInvisible(false);
-            player.getCooldowns().addCooldown(this, future);
+            player.getCooldowns().addCooldown(this, future * 20);
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
