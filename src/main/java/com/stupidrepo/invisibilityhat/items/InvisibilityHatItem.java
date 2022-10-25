@@ -24,22 +24,19 @@ public class InvisibilityHatItem extends Item {
         super(new Properties().stacksTo(1).fireResistant().tab(InvisibilityTab.INVISIBILITY_TAB));
     }
 
-    // Guess the song:
-
     private long timeKeepsOnSlippinSlippinSlippin;
     private long intoThe;
 
     private static final int future = 10;
 
-    private static final int ifYouChangeYourMind = 200;
-    private static final int onTheFirstDayInLine = 50;
+    private static final int radius = 75;
 
     private void sendMessageToPlayer(Level level, Player player, String text) {
         if(!level.isClientSide) { player.sendSystemMessage(Component.nullToEmpty(text)); }
     }
 
     private void stopAllChasingMobs(Level level, Player player) {
-        List<Mob> mobs = level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + ifYouChangeYourMind, player.getBlockY() + onTheFirstDayInLine, player.getBlockZ() + ifYouChangeYourMind, player.getBlockX() - ifYouChangeYourMind, player.getBlockY() - onTheFirstDayInLine, player.getBlockZ() - ifYouChangeYourMind), mob -> mob.getTarget() == player);
+        List<Mob> mobs = level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + radius, player.getBlockY() + radius, player.getBlockZ() + radius, player.getBlockX() - radius, player.getBlockY() - radius, player.getBlockZ() - radius), mob -> mob.getTarget() == player);
         mobs.forEach(mob -> mob.setTarget(null));
     }
 
@@ -62,10 +59,9 @@ public class InvisibilityHatItem extends Item {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag isAdvanced) {
-
         components.add(Component.literal("Hold SHIFT to view side effects!").withStyle(ChatFormatting.RED));
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("When going visible, you won't be able to mine blocks, place blocks\n or attack mobs for the amount of time you were invisible.").withStyle(ChatFormatting.DARK_RED));
+            components.add(Component.literal("When going visible, you won't be able to mine blocks, place blocks\nor attack mobs for the amount of time you was invisible.").withStyle(ChatFormatting.DARK_RED));
         }
         super.appendHoverText(stack, level, components, isAdvanced);
     }
