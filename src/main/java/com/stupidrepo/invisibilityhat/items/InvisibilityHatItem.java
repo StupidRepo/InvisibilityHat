@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -71,7 +72,7 @@ public class InvisibilityHatItem extends Item {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-        if(entity instanceof Player player && player.isInvisible() && ((level.getGameTime() - timeKeepsOnSlippinSlippinSlippin) / 20) >= future) {
+        if(entity instanceof Player player && !player.hasEffect(MobEffects.INVISIBILITY) && player.isInvisible() && ((level.getGameTime() - timeKeepsOnSlippinSlippinSlippin) / 20) >= future) {
             sendMessageToPlayer(level, player, String.format("Uh oh! You was invisibile for longer than %d seconds, so you became visible again!", future));
             player.setInvisible(false);
             player.getCooldowns().addCooldown(this, future * 20);
