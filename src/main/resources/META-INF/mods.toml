@@ -1,25 +1,25 @@
 modLoader="javafml"
 loaderVersion="[43,)"
-license="All rights reserved"
+license="MIT License"
 [[mods]]
 modId="invisibilityhat"
-version="${file.jarVersion}"
+version="1.0.0"
 displayName="Invisibility Hat"
 logoFile="icon.png"
 credits=""
 authors="Bradlee Barnes"
 description='''
 Allows the player to go invisible, but with an interesting side effect.
-View full description on Modrinth/GitHub!
+View full description here: https://github.com/StupidRepo/InvisibilityHat
 '''
 
-[[dependencies.examplemod]]
+[[dependencies.invisibilityhat]]
     modId="forge"
     mandatory=true
     versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.examplemod]]
+[[dependencies.invisibilityhat]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.19.2,1.20)"
