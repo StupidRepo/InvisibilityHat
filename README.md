@@ -1,3 +1,6 @@
+## WARNING
+Mod is currently being remade in Forge. This repository will be useless for now.
+
 ## About this Mod
 ### What does this mod do?
 It adds a new item called **the Invisibility Hat**! It will make you be invisible to *ANY* entity (players, mobs, animals) for up to 10 seconds (extendable up to 30 seconds!), but if you disable your invisibility, let's say, 6 seconds after you enabled it then you won't be able to mine blocks, place blocks or attack mobs for 3 seconds (half of 6 seconds), etc.
