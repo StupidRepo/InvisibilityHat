@@ -23,7 +23,7 @@ I thought it'd be funny to make it so you can't see the mod version. But don't w
 ### Why isn't the 'interesting mechanic' working?
 Currently, I still need to make it so you can't mine blocks, break blocks or attack mobs. It's harder than it seems, trust me. It should be released `this week`. Come back here to see if the time has changed.
 ## GitHub
-Download an **UNTESTED** build of the mod for `1.19.2 - Fabric` [here][dl].
+Download an **UNTESTED** build of the mod for `1.19.2` [here][dl].
 
 Before [report][itab]ing [bug][itab]s, please check if the bug you're about to report is already listed in the [known bugs][kissues] post.
 
