@@ -1,8 +1,7 @@
 name: Build Mod
 on: 
   workflow_dispatch:
-  schedule:
-    - cron: "0 */1 * * *"
+  push:
 jobs:
   gradle:
     name: Build Mod
