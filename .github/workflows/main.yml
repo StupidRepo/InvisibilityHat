@@ -18,10 +18,10 @@ jobs:
       uses: gradle/gradle-build-action@v2
     
     - name: Build to File
-      run: ./gradlew jar && mv build/devlibs/invisibility-hat-invisible-dev.jar build/invisibilityHat.jar
+      run: ./gradlew jar
 
     - name: Upload JAR file
       uses: actions/upload-artifact@v3.1.1
       with:
         name: downloadThis
-        path: build/invisibilityHat.jar
+        path: build/libs/*.jar
