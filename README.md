@@ -30,4 +30,4 @@ Before [report][itab]ing [bug][itab]s, please check if the bug you're about to r
 [dl]: https://github.com/StupidRepo/InvisibilityHat/actions/workflows/main.yml
 [mrinth]: https://modrinth.com/mod/invis-hat/
 [itab]: https://github.com/StupidRepo/InvisibilityHat/issues
-[kissues]: https://github.com/StupidRepo/InvisibilityHat/issues/2
+[kissues]: https://github.com/StupidRepo/InvisibilityHat/issues/1
