@@ -2,7 +2,6 @@ package com.stupidrepo.invisibilityhat;
 
 import com.mojang.logging.LogUtils;
 import com.stupidrepo.invisibilityhat.items.ModItems;
-import com.stupidrepo.invisibilityhat.villager.ModVillagers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,7 +20,6 @@ public class InvisibilityHat {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
-        ModVillagers.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
