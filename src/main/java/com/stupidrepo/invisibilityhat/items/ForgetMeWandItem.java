@@ -1,10 +1,12 @@
 package com.stupidrepo.invisibilityhat.items;
 
+import com.stupidrepo.invisibilityhat.damagesources.ForgotLifeSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -28,17 +30,20 @@ public class ForgetMeWandItem extends Item {
         if(!level.isClientSide) { player.sendSystemMessage(Component.nullToEmpty(text)); }
     }
 
-    private int stopAllChasingMobs(Level level, Player player) {
+    private int killChasingMobs(Level level, Player player) {
         List<Mob> mobs = level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + radius, player.getBlockY() + radius, player.getBlockZ() + radius, player.getBlockX() - radius, player.getBlockY() - radius, player.getBlockZ() - radius), mob -> mob.getTarget() == player);
-        mobs.forEach(mob -> mob.setTarget(null));
+        mobs.forEach(LivingEntity::kill);
         return mobs.size();
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        int mobsDeleted = stopAllChasingMobs(level, player);
-        player.setHealth((float) (player.getHealth() - (.25 * mobsDeleted)));
-        sendMessageToPlayer(level, player, String.format("Ouch! %d mob(s) were deleted.", mobsDeleted));
+        int mobsDeleted = killChasingMobs(level, player);
+        float heartsToTakeAway = (float) (.25 * mobsDeleted);
+        if(mobsDeleted == 0) { return super.use(level, player, hand); }
+        player.hurt(new ForgotLifeSource(), heartsToTakeAway);
+        player.getCooldowns().addCooldown(this, mobsDeleted * 20);
+        sendMessageToPlayer(level, player, String.format("Ouch! %d %s got deleted. You've lost %.2f %s!", mobsDeleted, (mobsDeleted == 1) ? "mob" : "mobs", heartsToTakeAway, (heartsToTakeAway == 1) ? "heart" : "hearts"));
         return super.use(level, player, hand);
     }
 
