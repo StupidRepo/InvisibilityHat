@@ -61,7 +61,7 @@ public class InvisibilityHatItem extends Item {
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> components, @NotNull TooltipFlag isAdvanced) {
         components.add(Component.literal("Hold SHIFT to view side effects!").withStyle(ChatFormatting.RED));
         if(Screen.hasShiftDown()) {
-            components.add(Component.literal("When going visible, you won't be able to mine blocks, place blocks\nor attack mobs for the amount of time you was invisible.").withStyle(ChatFormatting.DARK_RED));
+            components.add(Component.literal("When you become visible, you won't be able to mine blocks, place blocks\nor attack mobs for the amount of time you was invisible.").withStyle(ChatFormatting.DARK_RED));
         }
         super.appendHoverText(stack, level, components, isAdvanced);
     }
