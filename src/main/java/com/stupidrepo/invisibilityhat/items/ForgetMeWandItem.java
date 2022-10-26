@@ -4,8 +4,12 @@ import com.stupidrepo.invisibilityhat.damagesources.ForgotLifeSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +36,16 @@ public class ForgetMeWandItem extends Item {
 
     private int killChasingMobs(Level level, Player player) {
         List<Mob> mobs = level.getEntitiesOfClass(Mob.class, new AABB(player.getBlockX() + radius, player.getBlockY() + radius, player.getBlockZ() + radius, player.getBlockX() - radius, player.getBlockY() - radius, player.getBlockZ() - radius), mob -> mob.getTarget() == player);
-        mobs.forEach(LivingEntity::kill);
+        mobs.forEach(mob -> {
+            LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+            bolt.clearFire();
+            bolt.setDamage(99999f);
+            bolt.setPos(mob.position());
+            level.addFreshEntity(bolt);
+            if(!mob.isDeadOrDying()) {
+                mob.hurt(DamageSource.LIGHTNING_BOLT, 99999f);
+            }
+        });
         return mobs.size();
     }
 

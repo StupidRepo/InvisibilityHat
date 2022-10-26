@@ -42,6 +42,9 @@ public class InvisibilityHatItem extends Item {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        if(player.hasEffect(MobEffects.INVISIBILITY)) {
+            return super.use(level, player, hand);
+        }
         if(!player.isInvisible()) {
             stopAllChasingMobs(level, player);
             timeKeepsOnSlippinSlippinSlippin = level.getGameTime();
@@ -68,10 +71,12 @@ public class InvisibilityHatItem extends Item {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-        if(entity instanceof Player player && !player.hasEffect(MobEffects.INVISIBILITY) && player.isInvisible() && ((level.getGameTime() - timeKeepsOnSlippinSlippinSlippin) / 20) >= future) {
-            sendMessageToPlayer(level, player, String.format("Uh oh! You was invisibile for longer than %d seconds, so you became visible again!", future));
-            player.setInvisible(false);
-            player.getCooldowns().addCooldown(this, future * 20);
+        if(entity instanceof Player player) {
+            if(player.isInvisible() && ((level.getGameTime() - timeKeepsOnSlippinSlippinSlippin) / 20) >= future && !player.hasEffect(MobEffects.INVISIBILITY)) {
+                sendMessageToPlayer(level, player, String.format("Uh oh! You went invisible for longer than %d seconds, so you became visible again!", future));
+                player.setInvisible(false);
+                player.getCooldowns().addCooldown(this, future * 20);
+            }
         }
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
