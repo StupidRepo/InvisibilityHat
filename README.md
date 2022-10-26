@@ -21,7 +21,7 @@ When you go invisible, anything that is chasing you or targeting you (zombies, a
 I thought it'd be funny to make it so you can't see the mod version. But don't worry, I am actively updating the mod with bug fixes and new updates.
 
 ### Why isn't the 'interesting mechanic' working?
-Currently, I still need to make it so you can't mine blocks, break blocks or attack mobs. It's harder than it seems, trust me. It should be released `this week`. Come back here to see if the time has changed.
+Currently, I still need to make it so you can't mine blocks, break blocks or attack mobs. It's harder than it seems, trust me. It should be released `soon`. Come back here to see if the time has changed.
 ## GitHub
 Download an **UNTESTED** build of the mod for `1.19.2` [here][dl].
 
